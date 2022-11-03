@@ -1,0 +1,61 @@
+.css-button-rounded--sky {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    border: 2px solid #00acee;
+    background: #00acee;
+  }
+  .css-button-rounded--sky:hover {
+    background: #fff;
+    color: #00acee
+  }
+
+  #new_post_title {
+    font-size: 1.5em;
+
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  #ind_post > * {
+    margin-left: 3px;
+  }
+
+  #usertitle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: xx-large;
+  }
+
+  .css-button-fully-rounded--sky {
+    min-width: 80px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 20px;
+    border: 2px solid #00acee;
+    background: #00acee;
+  }
+  .css-button-fully-rounded--sky:hover {
+    background: #fff;
+    color: #00acee
+  }
+
+  a {
+    color: black;
+  }
