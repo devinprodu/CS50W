@@ -13,7 +13,7 @@ import json
 
 
 
-from .models import User, Post, Followee, Follower
+from .models import User, Post, Followee, Follower, Like
 
 
 
@@ -191,3 +191,63 @@ def post(request):
                     "message": "The submited post was not valid.",
                     "error": postform.errors
                 })
+
+@login_required
+def edit(request):
+    # Only accept PUT requests
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+
+    # Read data from request
+    data = json.loads(request.body)
+    # Lookup post
+    try:
+        post = Post.objects.get(id=data['id'])
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Please enter a valid id"}, status=404)
+
+    # Check whether the request was submitted by the original poster
+    if request.user != post.creator:
+        return JsonResponse({"error": "You can't edit posts submitted by other users"}, status=401)
+    # User is OP, continue
+    # In production I would actually truncate data content to ensure a char limit and sanitize it just in case.
+    post.content = data['content']
+    post.save()
+
+    return JsonResponse({"message": "Post was updated successfully"}, status=200)
+
+@login_required
+def like(request):
+    # Only accept PUT requests
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    
+    # Read data from request
+    data = json.loads(request.body)
+
+    # Check if the post exists
+    try: 
+        post = Post.objects.get(id=data['id'])
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Please enter a valid post id"}, status=404)
+    # Check if the like model exists for this post
+    try:
+        liked = Like.objects.get(post=data['id'])
+        # Check if user previously liked this post
+        if request.user in liked.user.all():
+            # User liked the post, remove it
+            print("got to user liked")
+            liked.user.remove(request.user)
+            return JsonResponse({"success": "Like removed"}, status=200)
+        # User hasn't liked the post before, like it
+        print("got to user hasnt liked")
+
+        liked.user.add(request.user)
+        return JsonResponse({"success": "Like added"}, status=200)
+    except Like.DoesNotExist:
+        print("got to like doesnNOtExist")
+        # This is the first like on this post, create the object
+        liked = Like(post=post)
+        liked.save()
+        liked.user.add(request.user)
+        return JsonResponse({"success": "Like added"}, status=404)

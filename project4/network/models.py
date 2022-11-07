@@ -14,6 +14,14 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
+    def serialize(self):
+        return {
+            "creator": self.creator,
+            "content": self.content,
+            "created_on": self.created_on,
+            "updated_on": self.updated_on,
+        }
+
     def __str__(self):
         return f"{self.creator}: {self.content}"
 
@@ -32,5 +40,7 @@ class Follower(models.Model):
         return f"{self.user} Followers"
 
 class Like(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", unique=True)
     user = models.ManyToManyField(User, blank=True, related_name="likes")
+    def __str__(self):
+        return f"{self.post} Likes"

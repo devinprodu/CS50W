@@ -20,14 +20,26 @@
             </div>
             <div class="row">
                 <div id="posts" class="w-75 mx-auto" >
+                    <p id="editResponse" style="display: none;"></p>
                     {% for post in posts %}
                     <div id ="ind_post" class="border rounded mt-2">
                         <a href="{% url 'profile' post.creator %}" style="text-decoration:none"><b>{{ post.creator | capfirst}}</b></a>
-                        <p>{{ post.content }}</p>
+                        <div id="post_content_{{post.id}}"><p>{{ post.content }}</p></div>
                         <small class="text-muted">{{ post.created_on }}</small>
                         <div id="likes" class="row no-gutters" >
-                            <p class="mr-1">{{ post.likes.count }}</p>
-                            <svg aria-label="Like" color="#8e8e8e" fill="#8e8e8e" height="24" role="img" viewBox="0 0 24 24" width="16">
+                            {% if post.likes.first.user.all.count %}
+                            <p class="mr-1">{{ post.likes.first.user.all.count}}</p>
+                            {% else %}
+                            <p class="mr-1">0</p>
+                            {% endif %}
+                            {% if request.user in post.likes.first.user.all %} <!-- UPDATE IF LATER -->
+                            <svg class="likes" width="16" height="24" viewBox="0 0 36 36" aria-label="Liked" role="img" id="{{post.id}}">
+                                <path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868c-3.308 0-6.227 1.633-8.018 4.129c-1.791-2.496-4.71-4.129-8.017-4.129c-5.45
+                                 0-9.868 4.417-9.868 9.868c0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447
+                                  17.617-19.959c.17-.721.268-1.469.268-2.242z"></path></svg>
+                            
+                            {% else %}
+                            <svg class="likes" aria-label="notLiked" color="#8e8e8e" id="{{post.id}}" fill="#8e8e8e" height="24" role="img" viewBox="0 0 24 24" width="16">
                                 <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 
                                 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 
                                 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 
@@ -35,6 +47,11 @@
                                 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z">        
                                 </path>
                             </svg>
+                            {% endif %}
+                            {% if request.user == post.creator %}
+                            <a class="edit ml-2" href="#" name="edit{{post.id}}" id="{{post.id}}">Edit</a>
+                            {% endif %}
+
                         </div>
                     </div>
                     {% endfor %}
