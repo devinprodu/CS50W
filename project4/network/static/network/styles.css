@@ -80,9 +80,22 @@
     color: #00acee
   }
 
-  svg:hover {
+  svg.like_false:hover {
     fill: red;
     cursor: pointer;
 
   }
+
+  svg.like_true {
+    fill: red;
+    cursor: pointer;
+
+  }
+  
+  svg.like_true:hover {
+    fill: #8e8e8e;
+    cursor: pointer;
+
+  }
+  
   

@@ -3,16 +3,16 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col" id="profile_data">
+            <div class="col-sm-4 col-md-3" id="profile_data">
                 <div class="row align-items-end">
-                    <div class="col mt-3">
+                    <div class="col-4 mt-3">
                         <p id="usertitle">{{userdata.username | capfirst}}</p>
                     </div>
-                    <div class="col mt-1 text-center">
+                    <div class="col-4 mt-1 text-center">
                         <p><b>Followers: </b></p>
                         <p>{{userdata.followeeT.count}}</p>
                     </div>
-                    <div class="col mt-1 text-center">
+                    <div class="col-4 mt-1 text-center">
                         <p><b>Following: </b></p>
                         <p>{{userdata.followedT.count}}</p>
                     </div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 mt-3" id="posts">
+            <div class="col-sm-8 col-md-6 mt-3" id="posts">
                 {% for post in posts %}
                 <div id ="ind_post" class="border rounded mt-2">
                     <b>{{ post.creator | capfirst}}</b>
@@ -60,7 +60,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="col-3" id="right_space"></div>
+            <div class="col" id="right_space"></div>
         </div>
         <div class="row mt-3 justify-content-center">
             <nav aria-label="Posts navigation">

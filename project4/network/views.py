@@ -59,7 +59,13 @@ def profile(request, username, page=1):
 
 @login_required
 def following(request):
-    posts = Post.objects.filter(creator__in=request.user.followeesu.first().followees.all()).order_by('-created_on')
+    try:
+        posts = Post.objects.filter(creator__in=request.user.followeesu.first().followees.all()).order_by('-created_on')
+    except:
+        return render(request, "network/index.html", {
+        'message': "You are not following anyone yet"
+    })
+        
     print(request.user.followeesu.first().followees.all())
     return render(request, "network/index.html", {
         'posts': posts
@@ -183,10 +189,8 @@ def post(request):
     
     if postform.is_valid():
         posted = postform.save()
-        return render(request, "network/index.html", {
-                "message": "Your post was submited successfully."
-            })
-
+        return index(request)
+        
     return render(request, "network/index.html", {
                     "message": "The submited post was not valid.",
                     "error": postform.errors
@@ -241,7 +245,6 @@ def like(request):
             return JsonResponse({"success": "Like removed"}, status=200)
         # User hasn't liked the post before, like it
         print("got to user hasnt liked")
-
         liked.user.add(request.user)
         return JsonResponse({"success": "Like added"}, status=200)
     except Like.DoesNotExist:

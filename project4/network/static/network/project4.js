@@ -74,6 +74,22 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(result => {
-            console.log(result);
+            let counter = document.querySelector(`#post_content_${id}`).parentElement.children[3].children[0];
+            let icon = document.querySelector(`#post_content_${id}`).parentElement.children[3].children[1];
+            if (result['success'] == 'Like removed') {
+                // Update like counter
+                counter.innerHTML = counter.innerHTML - 1;
+                // Change icon
+                icon.classList.remove('like_true');
+                icon.classList.add('like_false');
+            }
+            else if (result['success'] == 'Like added') {
+                // Update like counter
+                counter.innerHTML = parseInt(counter.innerHTML) + 1;
+                // Change icon
+                icon.classList.remove('like_false');
+                icon.classList.add('like_true');
+            }
+
         })
   }
